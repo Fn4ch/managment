@@ -1,0 +1,13 @@
+$colorWhite: #ffffff;
+$colorBlue: #3f50b5;
+$colorBlueDark: #002884;
+$colorBlueLight: #757ce8;
+$colorSecondary: #f44336;
+
+button {
+    border-radius: 8px;
+    background-color: $colorBlue;
+    color: $colorWhite;
+    padding: 8px 16px;
+    border: none;
+}

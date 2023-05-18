@@ -1,0 +1,26 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "plugin:vue/vue3-strongly-recommended",
+    "eslint:recommended",
+    "@vue/typescript/recommended",
+    "plugin:promise/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2021
+  },
+  "rules": {
+    "vue/padding-line-between-blocks": ["error", "always"],
+    "semi": [2, "never"],
+    "@typescript-eslint/ban-types": "off",
+    "no-empty-function": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "eqeqeq": "off",
+    "vue/require-default-prop": "off"
+  }
+}
