@@ -49,12 +49,12 @@ const deleteUser = () => {
 
 <style lang="scss" scoped>
     .list-item{
-        padding: 16px 32px;
-        border: 1px solid $colorBlueLight;
+        padding: 16px;
         display: flex;
         gap: 16px;
         align-items: center;
         height: 80px;
+        border-bottom: 1px solid rgba($colorBlack, $alpha: 0.2);
 
         &__fio{
             display: flex;

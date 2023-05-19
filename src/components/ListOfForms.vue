@@ -2,7 +2,7 @@
   <div class="list">
     <ListItem
       v-for="f in forms"
-      :key="f.lastName"
+      :key="f.id"
       :form="f"
     />
   </div>
@@ -14,6 +14,7 @@ import { IForm } from '@/models/types'
 import ListItem from './ListItem.vue'
 
 
+
 defineProps({
     forms: { type: Object as PropType<IForm[]>, required: true}
 })
@@ -23,9 +24,10 @@ defineProps({
 
 <style lang="scss" scoped>
     .list{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        border: 1px solid $colorSecondary;
+      padding-top: 16px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba($colorBlack, $alpha: 0.2);
     }
 </style>

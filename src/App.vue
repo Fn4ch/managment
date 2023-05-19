@@ -1,10 +1,12 @@
 <template>
-  <FormsManagment />
+  <AppHeader />
+  <main>
+    <router-view />
+  </main>
 </template>
 
 <script setup lang="ts">
-import FormsManagment from './components/FormsManagment.vue'
-
+import AppHeader from '@/components/AppHeader.vue'
 </script>
 
 <style lang="scss">
@@ -18,6 +20,9 @@ import FormsManagment from './components/FormsManagment.vue'
   @media (min-width: 1921px) {
     font-size: .8vw;
   }
+}
+main{
+  margin-top: 120px;
 }
 body{
   min-height: 100%;
