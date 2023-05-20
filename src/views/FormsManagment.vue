@@ -6,7 +6,10 @@
         Добавить
       </button>
     </div>
-    <ListOfForms :forms="forms" />
+    <ListOfForms
+      :forms="forms"
+      @delete-form="handleDeleteForm"
+    />
   </div>
 </template>
 
@@ -19,6 +22,12 @@ import router from '@/router'
 
 
 const forms = ref<IForm[]>([])
+
+function handleDeleteForm(id: string) {
+  console.log(id)
+  const val = forms.value.filter(f => f.id !== id)
+  forms.value =val
+}
 
 // const fakeData: IForm[] = [
 //     {

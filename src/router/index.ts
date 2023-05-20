@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import FormsManagment from '@/views/FormsManagment'
+import FormsManagment from '@/views/FormsManagment.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -7,10 +7,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Home',
         component: FormsManagment
     },
-     {
+    {
         path: '/create-form',
-         name: 'Create form',
-        component: () => import('@/views/CreateForm.vue')
+        name: 'create-form',
+        component: () => import('@/views/CreateForm.vue'),
+        props: true
     },
 ]
 

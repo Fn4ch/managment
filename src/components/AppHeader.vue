@@ -18,6 +18,6 @@ header{
     right: 0;
     left: 0;
     height: 80px;
-    box-shadow: 4px 8px 32px rgba($colorBlack, $alpha: 0.1);
+    box-shadow: 4px 8px 32px rgba($colorBlack, $alpha: 0.15);
 }
 </style>

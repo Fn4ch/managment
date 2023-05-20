@@ -1,5 +1,5 @@
 export interface IForm {
-    id: number,
+    id: string,
     firstName: string;
     lastName: string;
     middleName: string | null;

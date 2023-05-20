@@ -30,56 +30,79 @@
 
 <script lang="ts" setup>
 import { IForm } from '@/models/types'
+import router from '@/router'
 import { PropType } from 'vue'
 
 
 const props = defineProps({
-    form: { type: Object as PropType<IForm>, required: true}
+  form: { type: Object as PropType<IForm>, required: true}
 })
 
+const emit = defineEmits(['deleteForm'])
+
 const openUpdate = () => {
-    console.log(props)
+  console.log('push')
+  router.push({
+    name: 'create-form',
+    path: '/create-form',
+    params: {
+      ...props.form
+    }
+  })
 }
 
 const deleteUser = () => {
-    console.log(props)
+  let forms :IForm[] = []
+  try {
+    const data = localStorage.getItem('forms')
+    if (data) {
+      forms = JSON.parse(data)
+    }
+  }
+  catch (e) {
+    alert(e)
+  }
+  forms = forms.filter( f => f.id !== props.form.id)
+
+  emit('deleteForm', props.form.id )
+  localStorage.setItem('forms', JSON.stringify(forms))
 }
 
 </script>
 
 <style lang="scss" scoped>
-    .list-item{
-        padding: 16px;
-        display: flex;
-        gap: 16px;
-        align-items: center;
-        height: 80px;
-        border-bottom: 1px solid rgba($colorBlack, $alpha: 0.2);
+.list-item{
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  height: 80px;
+  border-bottom: 1px solid rgba($colorBlack, $alpha: 0.2);
 
-        &__fio{
-            display: flex;
-            flex: 2;
-            font-size: 20px;
-            line-height: 1.5;
-            align-items: center;
-            gap: 16px;
-        }
+  &__fio{
+    display: flex;
+    flex: 2;
+    font-size: 20px;
+    line-height: 1.5;
+    align-items: center;
+    gap: 16px;
+  }
 
-        &__birth-date{
-            flex: 1;
-            font-size: 20px;
-            line-height: 1.5;
-        }
+  &__birth-date{
+    flex: 1;
+    font-size: 20px;
+    line-height: 1.5;
+  }
 
-        &__description{
-            flex: 2;
-            font-size: 12px;
-            line-height: 1.4;
-        }
+  &__description{
+    flex: 2;
+    font-size: 12px;
+    line-height: 1.4;
+  }
 
-        &__actions{
-            display: flex;
-            gap: 16px;
-        }
-    }
+  &__actions{
+    display: flex;
+    gap: 16px;
+  }
+}
 </style>

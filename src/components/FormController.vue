@@ -4,7 +4,7 @@
   >
     <div class="controllers__input">
       <span>ФИО</span>
-      <div>
+      <div class="controllers__input-field">
         <input
           type="text"
           v-model="fio"
@@ -22,7 +22,7 @@
     </div>
     <div class="controllers__input">
       <span>Дата рождения</span>
-      <div>
+      <div class="controllers__input-field">
         <input
           type="text"
           v-model="birthDate"
@@ -46,30 +46,35 @@
         v-model="description"
       />
     </div>
+    <button
+      class="controllers__create"
+      @click="createNewForm"
+    >
+      Создать
+    </button>
   </div>
-  <button @click="createNewForm">
-    Создать
-  </button>
 </template>
 
 <script lang="ts" setup>
 import { IForm } from '@/models/types'
-import { ref, computed} from 'vue'
+import router from '@/router'
+import { ref, computed } from 'vue'
 
 
-const props = withDefaults(defineProps<IForm>(), {
-    firstName: '',
-    lastName: '',
-    middleName: '',
-    birthDate: '',
-    description: ''
+const props = defineProps({
+  id: {type: String},
+  firstName: {type: String},
+  lastName: {type: String},
+  middleName: {type: String},
+  birthDate: {type: String},
+  description: {type: String},
 })
 
-const fio = ref<string>(`${props.lastName} ${props.firstName} ${props.middleName ?? ''}`)
-const birthDate = ref<string>(props.birthDate)
+const fio = ref<string>(`${props.lastName ?? ''} ${props.firstName ?? ''} ${props.middleName ?? ''}`)
+const birthDate = ref<string>(props.birthDate ?? '')
 const description = ref<string>(props.description ?? '')
 
-const fioRegex = /^[\p{L} ]{1,}(?:,[\p{L} ]{1,}){1,2}$/u
+const fioRegex = /^[а-яА-ЯёЁa-zA-Z]+\s[а-яА-ЯёЁa-zA-Z]+\s?[а-яА-ЯёЁa-zA-Z]*$/
 const dateRegex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-([0-9]{4})$/
 
 const validateBirthDate = () => {
@@ -95,19 +100,28 @@ const validateBirthDate = () => {
 
 const fioError = computed(() => {
   if (fio.value) {
-    return fioRegex.test(fio.value)
+    return fioRegex.test(fio.value.trimStart().trimEnd())
   }
   return false
 })
 
 const birthError = computed(() => {
   if (birthDate.value) {
-    return dateRegex.test(birthDate.value)
+
+    return dateRegex.test(birthDate.value.trimStart().trimEnd())
   }
   return false
 })
 
 const createNewForm = () => {
+  if (!fioError.value) {
+    alert('Введите ФИО в формате: Иванов Иван Иванович')
+    return
+  }
+  if (!birthDate.value) {
+    alert('Заполните дату в формате dd-mm-yyyy')
+    return
+  }
   let forms :IForm[] = []
   try {
     const data = localStorage.getItem('forms')
@@ -119,9 +133,10 @@ const createNewForm = () => {
     alert(e)
   }
   const [ lastName, firstName, middleName ] = fio.value.trimStart().trimEnd().split(' ')
-  forms.push({ id: Date.now() , lastName, firstName, middleName, birthDate: birthDate.value, description: description.value })
+  forms.push({ id: Date.now().toString() , lastName, firstName, middleName, birthDate: birthDate.value, description: description.value })
 
   localStorage.setItem('forms', JSON.stringify(forms))
+  router.push('/')
 }
 
 
@@ -130,11 +145,21 @@ const createNewForm = () => {
 
 <style lang="scss" scoped>
 .controllers{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 32px;
   input, textarea{
+    border: 1px solid rgba($colorBlack, $alpha: 0.2);
     padding: 8px 16px;
+    font-size: 16px;
+    line-height: 1.5;
     border-radius: 8px;
     margin-right: 16px;
     width: max-content;
+    box-shadow: 4px 8px 16px rgba($colorBlack, $alpha: 0.15);
+    width: 320px;
   }
   button{
     width: 104px;
@@ -145,11 +170,10 @@ const createNewForm = () => {
   }
   textarea{
     resize: none;
+    width: 464px;
     height: 80px;
-    width: 100%;
   }
   &__input{
-    width: 600px;
     padding: 0 32px;
     display: flex;
     flex-direction: column;
@@ -159,8 +183,15 @@ const createNewForm = () => {
     margin-bottom: 32px;
     &_error{
       color: $colorSecondary;
-      font-weight: 500;
     }
+  }
+  &__input-field{
+    display: flex;
+    align-items: center;
+  }
+  &__create{
+    color: $colorWhite;
+    background-color: $colorBlue;
   }
 }
 </style>

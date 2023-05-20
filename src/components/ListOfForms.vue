@@ -4,6 +4,7 @@
       v-for="f in forms"
       :key="f.id"
       :form="f"
+      @delete-form="deleteForm"
     />
   </div>
 </template>
@@ -13,11 +14,19 @@ import { PropType} from 'vue'
 import { IForm } from '@/models/types'
 import ListItem from './ListItem.vue'
 
+const emit = defineEmits(['delete-form'])
+
+const deleteForm = (id: string) => {
+  emit('delete-form', id)
+}
+
 
 
 defineProps({
-    forms: { type: Object as PropType<IForm[]>, required: true}
+  forms: { type: Object as PropType<IForm[]>, required: true}
 })
+
+
 
 
 </script>
