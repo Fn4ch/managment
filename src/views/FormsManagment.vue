@@ -2,7 +2,7 @@
   <div class="managment">
     <div class="managment__header">
       <span>Управление анкетами</span>
-      <button @click="router.push('/create-form')">
+      <button @click="openCreateForm">
         Добавить
       </button>
     </div>
@@ -19,6 +19,8 @@ import { ref, onMounted } from 'vue'
 import { IForm } from '@/models/types'
 import ListOfForms from '@/components/ListOfForms.vue'
 import router from '@/router'
+import { storeToRefs } from 'pinia'
+import useFormStore from '@/stores/formStore'
 
 
 const forms = ref<IForm[]>([])
@@ -27,6 +29,20 @@ function handleDeleteForm(id: string) {
   console.log(id)
   const val = forms.value.filter(f => f.id !== id)
   forms.value =val
+}
+
+
+const openCreateForm = () => {
+  const { formState } = storeToRefs(useFormStore())
+  formState.value = {
+    id: '',
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    birthDate: '',
+    description: '',
+  }
+  router.push('form-actions')
 }
 
 // const fakeData: IForm[] = [

@@ -8,20 +8,20 @@
         {{ form.lastName }}
       </div>
       <div class="list-item__fio_middlename">
-        {{ form.middleName }}
+        {{ form.middleName ?? '' }}
       </div>
     </div>
     <div class="list-item__birth-date">
       {{ form.birthDate }}
     </div>
     <div class="list-item__description">
-      {{ form.description }}
+      {{ form.description ?? '' }}
     </div>
     <div class="list-item__actions">
       <button @click="openUpdate">
         Редактировать
       </button>
-      <button @click="deleteUser">
+      <button @click="deleteForm">
         Удалить
       </button>
     </div>
@@ -32,26 +32,35 @@
 import { IForm } from '@/models/types'
 import router from '@/router'
 import { PropType } from 'vue'
+import { storeToRefs } from 'pinia'
+import useFormStore from '@/stores/formStore'
 
 
 const props = defineProps({
   form: { type: Object as PropType<IForm>, required: true}
 })
 
+const { formState } = storeToRefs(useFormStore())
+
 const emit = defineEmits(['deleteForm'])
 
+// const openUpdate = () => { ебоманый роутер...
+//   console.log('push')
+//   router.push({
+//     name: 'form-actions',
+//     path: '/form-actions',
+//     params: {
+//       ...props.form
+//     }
+//   })
+// }
+
 const openUpdate = () => {
-  console.log('push')
-  router.push({
-    name: 'create-form',
-    path: '/create-form',
-    params: {
-      ...props.form
-    }
-  })
+  formState.value = props.form
+  router.push('/form-actions')
 }
 
-const deleteUser = () => {
+const deleteForm = () => {
   let forms :IForm[] = []
   try {
     const data = localStorage.getItem('forms')
@@ -62,10 +71,13 @@ const deleteUser = () => {
   catch (e) {
     alert(e)
   }
-  forms = forms.filter( f => f.id !== props.form.id)
+  forms = forms.filter(f => f.id !== props.form.id)
 
-  emit('deleteForm', props.form.id )
-  localStorage.setItem('forms', JSON.stringify(forms))
+  const confirmDeletion = confirm(`Вы точно хотите удалить эту анкету?`)
+  if (confirmDeletion) {
+    emit('deleteForm', props.form.id)
+    localStorage.setItem('forms', JSON.stringify(forms))
+  }
 }
 
 </script>

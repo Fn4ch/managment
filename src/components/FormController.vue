@@ -48,9 +48,9 @@
     </div>
     <button
       class="controllers__create"
-      @click="createNewForm"
+      @click="isFormExist ? updateForm() : createNewForm()"
     >
-      Создать
+      {{ isFormExist ? 'Обновить' : 'Создать' }}
     </button>
   </div>
 </template>
@@ -58,24 +58,37 @@
 <script lang="ts" setup>
 import { IForm } from '@/models/types'
 import router from '@/router'
+import useFormStore from '@/stores/formStore'
+import { storeToRefs } from 'pinia'
 import { ref, computed } from 'vue'
 
 
-const props = defineProps({
-  id: {type: String},
-  firstName: {type: String},
-  lastName: {type: String},
-  middleName: {type: String},
-  birthDate: {type: String},
-  description: {type: String},
-})
+// const props = defineProps({
+//   id: {type: String},
+//   firstName: {type: String},
+//   lastName: {type: String},
+//   middleName: {type: String},
+//   birthDate: {type: String},
+//   description: {type: String},
+// })
 
-const fio = ref<string>(`${props.lastName ?? ''} ${props.firstName ?? ''} ${props.middleName ?? ''}`)
-const birthDate = ref<string>(props.birthDate ?? '')
-const description = ref<string>(props.description ?? '')
+const { formState } = storeToRefs(useFormStore())
+
+const fio = ref<string>(`${formState.value.lastName} ${formState.value.firstName} ${formState.value.middleName ?? ''}`)
+const birthDate = ref<string>(formState.value.birthDate)
+const description = ref<string>(formState.value.description ?? '')
 
 const fioRegex = /^[а-яА-ЯёЁa-zA-Z]+\s[а-яА-ЯёЁa-zA-Z]+\s?[а-яА-ЯёЁa-zA-Z]*$/
 const dateRegex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-([0-9]{4})$/
+
+const isFormExist = computed(() => {
+    let forms : IForm[] = []
+    const data = localStorage.getItem('forms')
+    if (data) {
+      forms = JSON.parse(data)
+  }
+    return forms.some(f => f.id === formState.value.id)
+})
 
 const validateBirthDate = () => {
   if (!birthDate.value) {
@@ -132,10 +145,40 @@ const createNewForm = () => {
   catch (e) {
     alert(e)
   }
-  const [ lastName, firstName, middleName ] = fio.value.trimStart().trimEnd().split(' ')
+  const [lastName, firstName, middleName] = fio.value.trimStart().trimEnd().split(' ')
+  console.log(middleName)
   forms.push({ id: Date.now().toString() , lastName, firstName, middleName, birthDate: birthDate.value, description: description.value })
 
+  console.log(forms)
   localStorage.setItem('forms', JSON.stringify(forms))
+  router.push('/')
+}
+
+const updateForm = async () => {
+  let forms :IForm[] = []
+  try {
+    const data = localStorage.getItem('forms')
+    if (data) {
+      forms = JSON.parse(data)
+    }
+  }
+  catch (e) {
+    alert(e)
+  }
+  const [ lastName, firstName, middleName ] = fio.value.trimStart().trimEnd().split(' ')
+  const updatingForm = forms.findIndex(f => f.id === formState.value.id)
+  
+  forms[updatingForm] = {
+    id: formState.value.id,
+    firstName: firstName,
+    lastName: lastName,
+    middleName: middleName,
+    description: description.value,
+    birthDate: birthDate.value
+  }
+  console.log(forms)
+
+  await localStorage.setItem('forms', JSON.stringify(forms))
   router.push('/')
 }
 

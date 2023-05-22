@@ -8,8 +8,8 @@ const routes: Array<RouteRecordRaw> = [
         component: FormsManagment
     },
     {
-        path: '/create-form',
-        name: 'create-form',
+        path: '/form-actions',
+        name: 'form-actions',
         component: () => import('@/views/CreateForm.vue'),
         props: true
     },
