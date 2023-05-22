@@ -8,3 +8,5 @@ yarn or npm i
 ```
 yarn dev
 ```
+![image](https://github.com/Fn4ch/managment/assets/71707224/51fd3dcc-d62e-424a-b29b-9e1bf2788a7e)
+
