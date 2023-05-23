@@ -176,7 +176,6 @@ const updateForm = async () => {
     description: description.value,
     birthDate: birthDate.value
   }
-  console.log(forms)
 
   await localStorage.setItem('forms', JSON.stringify(forms))
   router.push('/')

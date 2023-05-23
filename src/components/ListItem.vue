@@ -102,7 +102,7 @@ const deleteForm = () => {
 
   &__birth-date{
     flex: 1;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1.5;
   }
 
