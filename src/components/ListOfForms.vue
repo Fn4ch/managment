@@ -33,7 +33,7 @@ defineProps({
 
 <style lang="scss" scoped>
     .list{
-      padding-top: 16px;
+      padding-top: 1rem;
       width: 100%;
       display: flex;
       flex-direction: column;

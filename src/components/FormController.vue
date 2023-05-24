@@ -191,38 +191,42 @@ const updateForm = async () => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 32px;
+  padding: 2rem;
   input, textarea{
     border: 1px solid rgba($colorBlack, $alpha: 0.2);
-    padding: 8px 16px;
-    font-size: 16px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
     line-height: 1.5;
     border-radius: 8px;
-    margin-right: 16px;
-    width: max-content;
-    box-shadow: 4px 8px 16px rgba($colorBlack, $alpha: 0.15);
-    width: 320px;
+    box-shadow: 0.25rem 0.5rem 1rem rgba($colorBlack, $alpha: 0.15);
+    width: 20rem;
+    @media (max-width: 500px) {
+      width: 100%;
+    }
   }
   button{
-    width: 104px;
+    width: 7rem;
   }
   span{
     color: $colorBlueDark;
-    font-size: 24px;
+    font-size: 1.5rem;
   }
   textarea{
     resize: none;
-    width: 464px;
-    height: 80px;
+    width: 29rem;
+    height: 5rem;
+    @media (max-width: 500px) {
+      width: 100%;
+    }
   }
   &__input{
-    padding: 0 32px;
+    padding: 0px 2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 24px ;
-    margin-bottom: 32px;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
     &_error{
       color: $colorSecondary;
     }
@@ -230,6 +234,14 @@ const updateForm = async () => {
   &__input-field{
     display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    @media (max-width: 500px) {
+      flex-direction: column;
+      button{
+        width: fit-content;
+      }
+    }
   }
   &__create{
     color: $colorWhite;

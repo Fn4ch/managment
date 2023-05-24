@@ -11,7 +11,6 @@ import AppHeader from '@/components/AppHeader.vue'
 
 <style lang="scss">
 @import url('@/styles/variables.scss');
-@import url('@/styles/default.scss');
 *,body{
   margin: 0;
   padding: 0;
